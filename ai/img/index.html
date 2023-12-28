@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Image Generation API</title>
+    <title>Bad Request.</title>
 </head>
 <body>
     <script>
@@ -71,6 +71,9 @@
 
         // Append the seed to the end of the prompt
         const promptWithSeed = `${promptFromURL}   ID: ${seed}`;
+
+        // Send a message to indicate image generation is ready
+        console.log("mg"); // "mg" stands for "message-generated"
 
         // Call the function and get the Blob object
         queryImage({ "inputs": promptWithSeed }, modelUrl)
