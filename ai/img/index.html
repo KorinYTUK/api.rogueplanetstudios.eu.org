@@ -74,13 +74,14 @@
         const promptWithSeed = `${promptFromURL}   ID: ${seed}`;
 
         // Send a message to indicate image generation is ready
-        console.log("mg"); // "mg" stands for "message-generated"
+        //console.log("mg"); // "mg" stands for "message-generated"
 
         // Call the function and get the Blob object
         queryImage({ "inputs": promptWithSeed }, modelUrl)
             .then(blob => {
                 // Do further processing with the Blob object if needed
                 console.log(blob);
+                console.log("mg");
             })
             .catch(error => {
                 console.error("Error:", error);
