@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Generation API</title>
+</head>
+<body>
+    <script>
+        async function query(data, apiUrl) {
+            const response = await fetch(
+                apiUrl,
+                {
+                    headers: { Authorization: "Bearer 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" },
+                    method: "POST",
+                    body: JSON.stringify(data),
+                }
+            );
+            const result = await response.blob();
+            return result;
+        }
+
+        async function queryImage(data, apiUrl) {
+            try {
+                const blob = await query(data, apiUrl);
+
+                // Return the Blob object
+                return blob;
+            } catch (error) {
+                console.error("Error generating image:", error);
+                handleErrorResponse();
+                return null; // Return null in case of an error
+            }
+        }
+
+        function handleErrorResponse(status = 500) {
+            // Handle error response by returning JSON
+            const errorResponse = {
+                error: "failed generating the image",
+                status: status,
+            };
+            console.log(errorResponse);
+        }
+
+        // Trigger image generation
+        // Replace this with the actual API URL based on your logic
+        let modelUrl = "https://api-inference.huggingface.co/models/Yntec/epiCPhotoGasm";
+
+        // Generate a random seed (ID) between -99999 and 9999
+        const seed = Math.floor(Math.random() * 19999) - 9999;
+
+        // Get the prompt from the URL hash
+        const promptFromURL = window.location.hash.substr(1);
+        if (!promptFromURL) {
+            handleErrorResponse(400); // Bad Request
+        }
+
+        // Extract model suffix from the prompt
+        const modelSuffix = promptFromURL.split("_")[1];
+
+        // Determine the model URL based on the suffix
+        switch (modelSuffix) {
+            case "D3":
+                modelUrl = "https://api-inference.huggingface.co/models/openskyml/dalle-3-xl";
+                break;
+            // Add more cases for other model suffixes as needed
+            default:
+                modelUrl = "https://api-inference.huggingface.co/models/Yntec/epiCPhotoGasm";
+                break;
+        }
+
+        // Append the seed to the end of the prompt
+        const promptWithSeed = `${promptFromURL}   ID: ${seed}`;
+
+        // Call the function and get the Blob object
+        queryImage({ "inputs": promptWithSeed }, modelUrl)
+            .then(blob => {
+                // Do further processing with the Blob object if needed
+                console.log(blob);
+            })
+            .catch(error => {
+                console.error("Error:", error);
+            });
+    </script>
+</body>
+</html>
