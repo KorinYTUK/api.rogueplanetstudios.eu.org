@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bad Request.</title>
+    <title>Bad Request!</title>
 </head>
 <body>
     <script>
+        let blob
         async function query(data, apiUrl) {
             const response = await fetch(
                 apiUrl,
@@ -22,7 +23,7 @@
 
         async function queryImage(data, apiUrl) {
             try {
-                const blob = await query(data, apiUrl);
+                blob = await query(data, apiUrl);
 
                 // Return the Blob object
                 return blob;
